@@ -3,6 +3,7 @@ package com.luffyu.lock.db.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 
 import java.util.Date;
@@ -38,6 +39,14 @@ public class AcquireLockEntity {
      */
     private Date createTime;
 
+
+    /**
+     * 版本号
+     * mybatis-plus 可以通过 @Version 注解来实现版本号
+     */
+    private Integer version;
+
+
     public AcquireLockEntity() {
     }
 
@@ -45,5 +54,16 @@ public class AcquireLockEntity {
     public AcquireLockEntity(String methodName) {
         this.methodName = methodName;
         this.createTime = new Date();
+    }
+
+
+
+    public int addVersion(){
+        if(this.version == null){
+            this.version = 0;
+        }
+        this.version ++;
+
+        return this.version;
     }
 }
