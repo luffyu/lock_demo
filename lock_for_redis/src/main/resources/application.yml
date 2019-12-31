@@ -1,0 +1,16 @@
+spring:
+  redis:
+    cluster:
+      nodes:
+        - 172.20.154.101:7001
+        - 172.20.154.103:7001
+        - 172.20.154.104:7001
+        - 172.20.154.101:7002
+        - 172.20.154.103:7002
+        - 172.20.154.104:7002
+      connectionTimeout: 6000
+      soTimeout: 6000
+      maxAttempts: 5
+      password: coocaa.123
+      maxActive: 600
+      maxIdle: 300
