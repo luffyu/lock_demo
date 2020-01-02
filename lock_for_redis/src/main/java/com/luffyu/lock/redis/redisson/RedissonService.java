@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>${description}</p>
@@ -25,17 +26,27 @@ public class RedissonService {
 
 
     public void acquire(String key){
-
         RLock lock = redissonClient.getLock(key);
-
+        //获取锁的时候阻塞
         lock.lock();
-
-        log.info("do .....");
-
-        lock.unlock();
-
+        try{
+            runTask();
+        }finally {
+            lock.unlock();
+        }
     }
 
+
+
+    private void runTask(){
+        try {
+            String name = Thread.currentThread().getName();
+            log.info("线程{}获取到锁>>>>>",name);
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
