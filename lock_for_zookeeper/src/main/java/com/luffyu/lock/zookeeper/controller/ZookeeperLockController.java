@@ -1,5 +1,6 @@
 package com.luffyu.lock.zookeeper.controller;
 
+import com.luffyu.lock.zookeeper.service.CuratorZookeeperLock;
 import com.luffyu.lock.zookeeper.service.ZookeeperLockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,8 @@ public class ZookeeperLockController {
     @Resource
     private ZookeeperLockService zookeeperLockService;
 
+    @Resource
+    private CuratorZookeeperLock curatorZookeeperLock;
 
 
     @GetMapping("/acquire/{path}")
@@ -34,6 +37,23 @@ public class ZookeeperLockController {
     @GetMapping("/release/{path}")
     public Object release(@PathVariable("path") String path){
         return zookeeperLockService.releaseLock(path);
+    }
+
+
+    @GetMapping("/test/Process")
+    public Object process(String path){
+        for (int i=0;i<2;i++){
+            curatorZookeeperLock.testProcessMutex(path);
+        }
+        return true;
+    }
+
+    @GetMapping("/test/Semaphore")
+    public Object semaphore(String path){
+        for (int i=0;i<2;i++){
+            curatorZookeeperLock.testSemaphoreMutex(path);
+        }
+        return true;
     }
 
 }
